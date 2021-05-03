@@ -15,7 +15,8 @@ object Main {
   val trigger_interval = "30 seconds"
   val partition_interval = "10 minutes" // In the actual dau case, this is 1 day
   val accumulate_interval = "1 minutes" // In the actual dau case, this is 5 minutes
-  val timeout_duration = "1 minutes" // This is used to identify the last accumulate_interval of each day, and make sure the last interval waits for long enough to get all data of this day
+  val timeout_duration = "1 minutes" // At the last accumulate_interval of the day, wait for some time to make sure all late data has arrived before outputting the final count
+  // This is used to identify the last accumulate_interval of each day, and make sure the last interval waits for long enough to get all data of this day
   // This is needed because there may be delay in each accumulate_interval, and we are ok with that, as long as the last microbatch captures all delayed data.
   // So the timeout_duration needs to be long enough to cover all gaps between record arrival within the day (otherwise we may have premature timeout).
 
