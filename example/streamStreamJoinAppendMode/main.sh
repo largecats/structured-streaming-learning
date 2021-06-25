@@ -2,25 +2,21 @@
 
 set -e
 
-if [[ ${USER} = "seatalk" ]]
-then
-    root="/home/seatalk"
-else
-    root="/home/datadev/${USER}"
-fi
+root="/home/datadev/${USER}"
 
-repoName="word_count"
+repoName="structured-streaming-learning"
 moduleName=$(basename $(dirname $(dirname $(realpath ${BASH_SOURCE}))))
 modelName=$(basename $(dirname $(realpath ${BASH_SOURCE})))
 
 param=${@}
-sparkSubmit="/usr/local/spark2.4.3/bin/spark-submit"
+
+sparkSubmit="/usr/local/spark3.0.1/bin/spark-submit"
 deployMode="client"
 sparkConfig=$(cat <<-END
   --conf spark.yarn.maxAppAttempts=1
 END
 )
-target="target/scala-2.11/${modelName}.jar"
+target="target/scala-2.12/${modelName}.jar"
 sparkAppName="${moduleName}_${modelName} ${param}"
 
 logDir="${root}/logs/${repoName}/${moduleName}_${modelName}"
@@ -34,7 +30,7 @@ ${sparkSubmit} \
     --deploy-mode ${deployMode} \
     ${sparkConfig} \
     ${target} ${param} \
-    |& tee -a ${logPath}
+    |& tee ${logPath}
 
 sparkSubmitExit=${PIPESTATUS[0]}
 exit ${sparkSubmitExit}

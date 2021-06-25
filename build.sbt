@@ -5,8 +5,13 @@ lazy val common = (project in file("common"))
   .settings(name := "common")
   .settings(globalSettings)
 
-lazy val structuredNetworkWordCount = newProject(name = "structuredNetworkWordCount")
-lazy val accumulatedAggregation = newProject(name = "accumulatedAggregation")
+lazy val example = newProject(name = "example")
+lazy val streamStreamJoinAppendMode = newExampleProject(name = "streamStreamJoinAppendMode")
+lazy val streamStreamJoinUpdateMode = newExampleProject(name = "streamStreamJoinUpdateMode")
+
+lazy val useCase = newProject(name = "useCase")
+lazy val accumulatedAggregation = newUseCaseProject(name = "accumulatedAggregation")
+lazy val autoScaling = newUseCaseProject(name = "autoScaling")
 
 lazy val globalSettings = dependencySettings ++ runSettings ++ assemblySettings
 
@@ -14,9 +19,13 @@ lazy val dependencySettings = Seq(
   libraryDependencies ++= Seq(
     "org.apache.spark" %% "spark-core" % "3.0.1" % "provided",
     "org.apache.spark" %% "spark-sql" % "3.0.1" % "provided",
+    "org.apache.spark" %% "spark-sql" % "3.0.1" % "provided",
     "org.apache.spark" %% "spark-catalyst" % "3.0.1" % "provided",
+    "org.apache.kafka" % "kafka-clients" % "2.2.0" % "provided",
+    "org.apache.spark" %% "spark-sql-kafka-0-10" % "3.0.1" % "provided",
     "joda-time" % "joda-time" % "2.9.3" % "provided",
     "org.joda" % "joda-convert" % "1.8" % "provided",
+    "org.json4s" %% "json4s-native" % "3.6.6", // To avoid methodNotFound error, use the same version as Spark's built-in org.json4s.scalap (3.6.6)
     "com.kailuowang" %% "henkan-convert" % "0.6.2",
     "com.github.daddykotex" %% "courier" % "1.0.0",
     "com.softwaremill.sttp" %% "core" % "1.5.11",
@@ -78,6 +87,12 @@ def newProject(name: String): Project =
 
 def newProject(name: String, parent: String): Project =
   createProject(name, s"$parent/$name").withId(s"${parent}_$name")
+
+def newExampleProject(name: String): Project =
+  newProject(name, parent = "example")
+
+def newUseCaseProject(name: String): Project =
+  newProject(name, parent = "useCase")
 
 def createProject(name: String, path: String): Project = {
   Project(name, file(path))

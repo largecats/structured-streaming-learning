@@ -10,7 +10,7 @@ object Utilities {
   /** replicate the convert function for converting time interval string to milliseconds */
   def convert(interval: String): Long = {
     val cal = IntervalUtils.stringToInterval(UTF8String.fromString(interval))
-    if (cal.months != 0) {
+    if(cal.months != 0) {
       throw new IllegalArgumentException(s"Doesn't support month or year interval: $interval")
     }
     val microsInDays = Math.multiplyExact(cal.days, MICROS_PER_DAY)

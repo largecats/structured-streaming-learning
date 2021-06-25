@@ -13,12 +13,6 @@ param=${@}
 sparkSubmit="/usr/local/spark3.0.1/bin/spark-submit"
 deployMode="client"
 sparkConfig=$(cat <<-END
-  --executor-memory 20G \
-  --executor-cores 2 \
-  --driver-memory 20G \
-  --total-executor-cores 40 \
-  --conf spark.network.timeout=12000s \
-  --conf spark.executor.heartbeatInterval=100s \
   --conf spark.yarn.maxAppAttempts=1
 END
 )
