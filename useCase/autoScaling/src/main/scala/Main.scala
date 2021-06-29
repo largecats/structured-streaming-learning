@@ -8,8 +8,6 @@ import org.json4s.native.Serialization._
 import org.json4s.native.Serialization
 
 /**
-  * Based on https://confluence.garenanow.com/display/DATA/2021-03+Migrate+SparkStreaming+to+StructuredStreaming#id-202103MigrateSparkStreamingtoStructuredStreaming-FolderStructureDifference
-  *
   * 1. Read stream from Kafka producer.
   * 2. For each microbatch, split it into partitions where each partition contains no more than SPLIT_SIZE rows. The splitting is done by re-reading from the Kafka source with:
   *    i. the microbatch's original starting and ending offsets, and
@@ -17,7 +15,7 @@ import org.json4s.native.Serialization
   *
   *  To test in spark-shell:
   *  1. Launch spark-shell using /usr/local/spark3.0.1/bin/spark-shell --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.0.1,org.json4s:json4s-native_2.12:3.6.6
-  *  2. Load the script using > :load /home/datadev/xiaolf/structured-streaming-learning/autoScaling/src/main/scala/Main.scala
+  *  2. Load the script using > :load /home/<username>/structured-streaming-learning/autoScaling/src/main/scala/Main.scala
   *  3. Run the script using > Main.main(Array[String]())
   */
 object Main {
